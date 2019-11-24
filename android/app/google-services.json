@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "159191613954",
+    "firebase_url": "https://vizkard-bb042.firebaseio.com",
+    "project_id": "vizkard-bb042",
+    "storage_bucket": "vizkard-bb042.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:159191613954:android:3e42b6e91db87846",
+        "android_client_info": {
+          "package_name": "com.company.Vizkard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "159191613954-aeb2bklinstr6ss35p4ddp11napjebut.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.company.Vizkard",
+            "certificate_hash": "b867416ccd596b9a06686d67ce1dd397065a5dc7"
+          }
+        },
+        {
+          "client_id": "159191613954-01o7t8ec63b79vq7q9eg8jnqao77ck2a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJM5aeL-W8jvqabsTy5wVnFC9sBvEcg04"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "159191613954-01o7t8ec63b79vq7q9eg8jnqao77ck2a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
