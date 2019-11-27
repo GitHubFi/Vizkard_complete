@@ -344,6 +344,7 @@ class PublicProfileDetail extends Component {
                             style={{
                                 flex: 0.5,
                                 marginTop: width / 20,
+                                paddingBottom:10
                             }}
                         >
                             <List style={{}}>

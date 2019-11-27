@@ -23,7 +23,6 @@ import ChatScreen from './TabNavigator/ChatScreen'
 import { Provider } from "react-redux";                              //2
 import Profile from './TabNavigator/Profile'
 import { store, persistor } from "../Store/index";
-// import { loadState, saveState } from '../Store/stateMaintain'
 import { PersistGate } from 'redux-persist/integration/react'        //1
 import Icon from "react-native-vector-icons/Ionicons";
 import Login from "./SignIn/Login"
@@ -36,19 +35,10 @@ import ManageAccount from './DrawerNavigator/ManageAccount'
 const AuthStackNavigator = createStackNavigator(
   {
     signIn: SignIn,
-    // verifySignIn: VerifySignIn,
-    // app: AppDrawerNavigator,
     Login: Login,
     Profile: Profile,
     LogOut: LogOut,
     create_profile: CreateProfile,
-    
-    // Manage_Profile: Manage_Profile
-
-    // Edit_Experience: Edit_Experience
-
-
-    // ChatScreen:ChatScreen
   },
   {
     initialRouteName: "Login"
@@ -59,12 +49,6 @@ const Switch = createSwitchNavigator({
   splash: Splash,
   auth: AuthStackNavigator,
   app: AppDrawerNavigator,
-  // ManageAccount: ManageAccount
-
-
-
-
-  // ChatScreen:ChatScreen
 });
 
 export default class App extends Component {
@@ -77,106 +61,9 @@ export default class App extends Component {
     return (
       <Provider store={store}>
         <PersistGate persistor={persistor} loading={this.renderLoading()}>
-
           <Switch />
         </PersistGate>
-
       </Provider>
     );
   }
 }
-// const AppTabNavigator = createBottomTabNavigator({
-//   Home: {
-//     screen: Home
-//   },
-//   Settings: {
-//     screen: SettingScreen
-//   }
-// })
-// const AppStackNavigator = createStackNavigator({
-//   AppTabNavigator: {
-//     screen: AppTabNavigator
-//   }
-// })
-// const AppDrawerNavigator = createDrawerNavigator({
-//   Home: AppStackNavigator
-// })
-// const AuthStackNavigator = createStackNavigator(
-//   {
-//     signIn: SignIn,
-//     // create: CreateProfile,
-//     // Profle is in tab but we use here because route is not set we will move later in the yab
-//     profile: Profile,
-
-//   },
-//   // {
-//   //   initialRouteName: "signIn"
-//   // }
-// );
-
-//////////////////////
-
-// const AppStackNavigator = createStackNavigator({
-//   Login:{
-//     screen:SignIn
-//   },
-//   Home:Home
-// })
-
-/////////////////////////
-// export default createBottomTabNavigator({
-//   Home:
-//     {
-//       screen: Home,
-//       navigationOptions: {
-//         tabBarLabel: 'Home',
-//         tabBarIcon: ({ tintColor })=>(
-//           <Icon name="ios-home" size={24} />
-//         )
-//     }
-//   },
-// Settings: {
-//   screen:SettingScreen,
-//   navigationOptions: {
-//     tabBarLabel: 'Setting',
-//     tabBarIcon: ({ tintColor })=>(
-//       <Icon name="ios-settings" size={24} />
-//     )
-// }
-
-// }})
-
-//////////////////////////
-
-/////
-// const Tabs = createBottomTabNavigator(
-//   {
-//     message: Message,
-//     globalSocial: GlobalSocial,
-//     search: SearchFriend,
-//     videos: Videos
-//   },
-//   {
-//     order: ["videos", "globalSocial", "search", "message",],
-//     animationEnabled: true
-//   }
-// );
-// const Drawer = createDrawerNavigator({
-//   stack: Auth,
-//   tab: Tabs
-// });
-// const prevGetStateForActionRootStack = Switch.router.getStateForAction;
-
-// Switch.router.getStateForAction = (action, state) => {
-//   if (state && action.type === "ReplaceCurrentScreen") {
-//     console.log("replace screen action");
-//     const routes = state.routes.slice(0, state.routes.length - 1);
-//     routes.push(action);
-//     return {
-//       ...state,
-//       routes,
-//       index: routes.length - 1
-//     };
-//   }
-//   return prevGetStateForActionRootStack(action, state);
-// };

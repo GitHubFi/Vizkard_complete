@@ -30,30 +30,30 @@ exports.sendFriendRequest = functions.database.ref('/friend_requst_function/{use
             const token = snap.child('messaging_token').val();
             console.log("token: ", token);
 
-          
 
-                const payload = {
-                    notification: {
-                        data_type: "direct_message",
-                        title: "Friend Request",
-                        body: `${senderName} sent a friend request`,
-                      
-                    },
 
-                };
-                let options = { priority: "high" };
+            const payload = {
+                notification: {
+                    data_type: "direct_message",
+                    title: "Friend Request",
+                    body: `${senderName} sent a friend request`,
 
-                return admin.messaging().sendToDevice(token, payload, options)
-                    .then(function (response) {
-                        console.log("Successfully sent message:", response);
-                        console.log(response.results[0].error);
+                },
 
-                    })
-                    .catch(function (error) {
-                        console.log("Error sending message:", error);
+            };
+            let options = { priority: "high" };
 
-                    });
-            
+            return admin.messaging().sendToDevice(token, payload, options)
+                .then(function (response) {
+                    console.log("Successfully sent message:", response);
+                    console.log(response.results[0].error);
+
+                })
+                .catch(function (error) {
+                    console.log("Error sending message:", error);
+
+                });
+
         });
     });
 });
@@ -179,6 +179,58 @@ exports.sendEmail = functions.database.ref('/messages1/{userId}/{messageId}').on
         } else {
 
             return console.log('sended', info.response)
+        }
+    });
+});
+
+exports.sendGroupNotification = functions.database.ref('/group_notification/{userId}/{messageId}').onCreate((snapshot, context) => {
+
+    const data = snapshot.val();
+    const senderId = context.params.userId
+    console.log("receiverId: ", senderId);
+    const Sender_Name = data.Sender_name;
+    console.log("Sender_Name: ", Sender_Name);
+    const group_name = data.group_name;
+    console.log("group_name: ", group_name);
+    const message = data.message;
+    console.log("message: ", message);
+    const from = data.from;
+    const group_member = data.group_member
+    console.log(group_member, 'groupMemer');
+
+
+    for (var i = 0; i < group_member.length; i++) {
+        if (group_member[i] === from) {
+            group_member.splice(i, 1);
+        }
+    }
+    console.log(group_member, 'new Memer');
+
+
+    return group_member.forEach((element) => {
+        if (element) {
+            const token = [];
+            return admin.database().ref('/message_token/' + element).once('value').then(snap => {
+                const alltokens = snap.child("messaging_token").val();
+                token.push(alltokens);
+                const payload = {
+                    notification: {
+                        data_type: "direct_message",
+                        title: "New Message from " + group_name,
+                        body: message,
+                        // click_action: "fcm.ACTION.HELLO",
+                    },
+                };
+                let options = { priority: "high" };
+                return admin.messaging().sendToDevice(token, payload, options)
+                    .then(function (response) {
+                        console.log("Successfully sent message:", response);
+                        console.log(response.results[0].error);
+                    })
+                    .catch(function (error) {
+                        console.log("Error sending message:", error);
+                    });
+            });
         }
     });
 });

@@ -312,7 +312,7 @@ class AllFriendDetails extends Component {
                     <View
                         style={{ flex: 0.2, backgroundColor: "#0071CE", }}  >
                         <View
-                            style={{ flex: 0.5, marginTop: width / 20, }}  >
+                            style={{ flex: 0.5, marginTop: width / 20, paddingBottom:10}}  >
                             <List style={{}}>
                                 <ListItem noBorder thumbnail>
                                     <Left>

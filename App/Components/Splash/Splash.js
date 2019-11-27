@@ -114,18 +114,10 @@ export default class SplashScreen extends Component {
           this.state.connectionInfo === false ?
             <View style={{ position: 'absolute', top: "60%", left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center' }}>
               <Spinner color='blue' />
-
-              {/* <Animated.View style={{ transform: [{ rotate: spin }] }}> */}
-
               <MaterialCommunityIcons name='reload' spin color="blue" size={width / 15} style={{ marginTop: 60, }} onPress={() => this.check_internet()} />
               <Text style={{}}>No internet connection Try again</Text>
-              {/* </Animated.View> */}
-
-
             </View>
-
-
-            : null
+             : null
         }
       </View>
     );

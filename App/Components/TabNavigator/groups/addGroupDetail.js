@@ -24,16 +24,18 @@ export default class AddGroupDetail extends Component {
         const group_object = {
             group_creator_uid: uid,
             group_name: this.state.group_name,
-            group_member: [...this.props.selected, ...admin_Detail]
+            group_member: [...this.props.selected, ...admin_Detail],
+            admin_detail: [...this.props.admin]
+
         }
         // console.log(group_object)
 
-        this.props.selected.forEach(element => {
+        group_object.group_member.forEach(element => {
             if (element) {
                 firebase.database().ref(`users/${element.user_uid}/Groups`).push(group_object).
+                    // then(() => {
+                    // firebase.database().ref(`users/${uid}/Groups/`).push(group_object)
                     then(() => {
-                        firebase.database().ref(`users/${uid}/Groups/`).push(group_object)
-                    }).then(() => {
                         this.props.onClose(false);
                     }).catch((err) => {
                         Alert.alert(err)

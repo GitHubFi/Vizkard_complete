@@ -352,11 +352,11 @@ class Profile extends Component {
         if (fcmToken === '') {
 
         } else {
-          let user_id = this.props.userDetail.uid
+          let user_id = firebase.auth().currentUser.uid
           firebase.database().ref(`message_token/${user_id}`).set({
             messaging_token: fcmToken,
             name: this.props.userDetail.name,
-            user_id: this.props.userDetail.uid
+            user_id: user_id
           })
         }
 
@@ -432,11 +432,6 @@ class Profile extends Component {
     this.props.GetExperience(id);
     this.props.getSkill(id)
     this.props.profileData(id)
-
-
-
-
-
   }
 
 
@@ -498,7 +493,7 @@ class Profile extends Component {
 
   render() {
 
-    const  userDetail = this.all_data
+    const userDetail = this.all_data
     return (
       <ScrollView
         contentContainerStyle={{

@@ -146,7 +146,7 @@ export default class ChattingGroup extends Component {
     let user_info = this.props.navigation.state.params.group_member
     const sender_uid = firebase.auth().currentUser.uid
     user_info.forEach(element => {
-      if (sender_uid === element.user_uid) {
+      if (this.state.sender_uid === element.user_uid) {
         this.setState({
           sender_detail: element,
           user_name: element.name // user name
@@ -213,7 +213,7 @@ export default class ChattingGroup extends Component {
           message: this.state.textMessage,
           time: firebase.database.ServerValue.TIMESTAMP,
           from: sender_uid,
-          Sender_name: this.state.sender_detail.name,
+          Sender_name: this.state.user_name,
         };
         updates[
           `group_chatting/${group_name}/${userID}/${msgId}`
@@ -222,14 +222,14 @@ export default class ChattingGroup extends Component {
         firebase.database().ref().update(updates);
         this.setState({ textMessage: "" });
 
-        // firebase.database().ref('group_notification').child(sender_uid).push({
-        //   message: this.state.textMessage,
-        //   time: firebase.database.ServerValue.TIMESTAMP,
-        //   from: sender_uid,
-        //   Sender_name: this.state.sender_detail.name,
-        //   group_name: group_name,
-        //   group_member:group_detail.map((item)=> item.user_uid)
-        // });
+        firebase.database().ref('group_notification').child(sender_uid).push({
+          message: this.state.textMessage,
+          time: firebase.database.ServerValue.TIMESTAMP,
+          from: sender_uid,
+          Sender_name: this.state.user_name,
+          group_name: group_name,
+          group_member: group_detail.map((item) =>item.user_uid )
+        });
 
       }
     }
