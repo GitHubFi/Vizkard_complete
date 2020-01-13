@@ -28,8 +28,8 @@ export function profileAction(userID) {
   return dispatch => {
     // console.log(userID, 'phonennnnn')
     dispatch(GetProfileProgress());
-
-    firebase.database().ref(`users`).child(userID).on('child_added', snapshot => {
+    const id = firebase.auth().currentUser.uid
+    firebase.database().ref(`users`).child(id).on('child_added', snapshot => {
       let user = snapshot.val();
       // console.log(user, 'data')
 
@@ -156,7 +156,7 @@ export function getAllUser() {
       let userList = snapshot.val(),
 
         userListKeys = Object.keys(userList);
-      console.log(userListKeys, "9999999999999999999999999999999999999999999999999999999999")
+      // console.log(userListKeys, "9999999999999999999999999999999999999999999999999999999999")
       let arrList = [];
 
       userListKeys.map(i => {
@@ -375,7 +375,7 @@ export function getSkillAction(userID) {
       let user = snapshot.val();
       if (user !== null) {
         let skillkeys = Object.values(user);
-        console.log("add skill", skillkeys)
+        // console.log("add skill", skillkeys)
         let array = []
         array.push(skillkeys)
 
@@ -456,7 +456,7 @@ export function getAllMessageList(userID) {
 
       if (messageList !== null) {
         let messageKeys = Object.values(messageList);
-        console.log("add messageKeys", messageKeys)
+        // console.log("add messageKeys", messageKeys)
         let array = []
         array.push(messageKeys)
 

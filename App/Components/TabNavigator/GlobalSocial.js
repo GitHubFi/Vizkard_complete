@@ -597,7 +597,7 @@ class GlobalSocial extends Component {
   }
 }
 function mapStateToProps(state) {
-  console.log(state.appReducer.getTextDetected, "Array of detected text")
+  // console.log(state.appReducer.getTextDetected, "Array of detected text")
   return {
     allUserListComp: state.appReducer.allUserPublicList,
     userID: state.authReducer.userID,

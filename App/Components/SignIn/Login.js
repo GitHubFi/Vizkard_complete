@@ -101,7 +101,6 @@ class Login extends Component {
                         <Input
                             style={{ backgroundColor: "#fff", borderRadius: 10 }}
                             placeholder="Enter Your Email"
-                            // placeholder={"Enter Your Email"}
                             keyboardType={"email-address"}
                             autoCapitalize={"none"}
                             onChangeText={email => this.setState({ email })}

@@ -17,6 +17,7 @@ import { getAllMessageList } from '../../Store/Actions/AppAction'
 import User from "../SignIn/User";
 import { connect } from 'react-redux';
 import { ActionSheetCustom as ActionSheet } from 'react-native-actionsheet'
+import Badge from './notification/Badge'
 
 
 const options = [
@@ -52,23 +53,16 @@ class MessageList extends Component {
       headerTintColor: "#fff",
       headerLeft: (
         <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
-          {/* <Image
-            source={require("../../../assets/Setting.png")}
-            resizeMode="contain"
-            style={{ width: width / 12, marginLeft: 8, marginRight: -6 }}
-          /> */}
           <Icon name="menu" style={{ color: "#fff", marginLeft: 18, fontSize: width / 9 }} />
         </TouchableOpacity>
       ),
       headerTitleStyle: {
-        // textAlign: "center",
         flex: 1,
         marginLeft: 12
       },
       headerRight: (
         <View style={{ flexDirection: "row" }}>
           <TouchableOpacity
-
             onPress={navigation.getParam("dropdown")}
             style={{ marginRight: width / 28 }}
           >
@@ -99,62 +93,32 @@ class MessageList extends Component {
     })
   }
 
-  showActionSheet = () => {
-    this.ActionSheet.show()
-  }
-
-  functionQR = () => {
-
-    this.props.navigation.navigate('MakeGroup')
-    // Alert.alert('')
-
-
-  }
-  functionScanCard = () => {
-    this.props.navigation.navigate('AllGroup')
-
-  }
+  showActionSheet = () => { this.ActionSheet.show() }
+  functionQR = () => { this.props.navigation.navigate('MakeGroup'); }
+  functionScanCard = () => { this.props.navigation.navigate('AllGroup') }
 
   componentDidMount() {
     this.props.navigation.setParams({
-
-      dropdown: this.showActionSheet,
-
+      dropdown: this.showActionSheet
     });
   }
 
   async componentWillMount() {
-    // let userPhone = await AsyncStorage.getItem('user');
     let userID = this.props.userID.uid;
-
     this.props.Get_Message_List(userID);
-
-
-
     let dbRef = firebase.database().ref(`users/${userID}/FriendList`);
     dbRef.on("child_added", async val => {
       let person = val.val();
-      // console.log(person, "all users")
       person.phone = val.key;
-      // console.log(person.phone, "who user number--------------------------------")
-
       if (person.uid === userID) {
-
       } else {
-        // console.log(person, "own user");
         this.setState(prevState => {
           return {
-            users: [...prevState.users, person],
-            // phone: [...prevState.phone, person],
-
+            users: [...prevState.users, person]
           };
         });
-        this.setState({
-          Loading: true
-        })
-        //this.props.GETUSERRequest(this.state.users)
+        this.setState({ Loading: true })
       }
-
     });
 
     firebase
@@ -172,7 +136,7 @@ class MessageList extends Component {
 
   }
   render() {
-    console.log(this.state.users)
+    // console.log(this.state.users)
     return (
       <View style={{
         backgroundColor: "#ffffff", flex: 1,
@@ -203,8 +167,7 @@ class MessageList extends Component {
                         <Text note> {item.email}</Text>
                       </Body>
                       <Right>
-
-                        {/* <Text>{this.state.badge_count}</Text> */}
+                        {/* <Badge count={15} /> */}
                       </Right>
                     </ListItem>
                   </List>
@@ -232,7 +195,7 @@ class MessageList extends Component {
               this.functionQR()
             }
             else {
-              console.log("nothing to select")
+              // console.log("nothing to select")
             }
           }
 

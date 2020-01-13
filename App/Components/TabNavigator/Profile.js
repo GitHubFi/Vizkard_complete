@@ -1,32 +1,25 @@
 import React, { Component } from "react";
 import {
-  View, Dimensions, Image, Text, ScrollView,
-  ActivityIndicator, AsyncStorage, Alert, TouchableHighlight,
-  Modal, TouchableOpacity, Share,
+  View, Dimensions, Image, Text, ScrollView, AsyncStorage, Alert, TouchableHighlight, Modal, TouchableOpacity, Share
 } from "react-native";
 import ImagePicker from 'react-native-image-picker';
 const { width, height } = Dimensions.get("window");
-import { List, ListItem, Thumbnail, Left, Right, Body, Button, Badge, Icon } from "native-base";
+import { List, ListItem, Thumbnail, Left, Body, Button, Spinner } from "native-base";
 import { connect } from "react-redux";
-import { profileAction, GetUserAction, getSkillAction } from '../../Store/Actions/AppAction'
-import Ionicons from "react-native-vector-icons/Ionicons";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
+import { profileAction, GetUserAction, getSkillAction } from '../../Store/Actions/AppAction';
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Add_Expreience from './Add_Expreience';
 import Add_Skill from './Add_Skill';
-import Users from "../SignIn/User";
 import firebase from "react-native-firebase";
 import ShowSkill from "./ShowSkill";
 import Edit_Experience from "./Edit_Experience";
 import AddTagLine from "./AddTagLine";
-// import RNFetchBlob from 'react-native-fetch-blob';
-import Manage_Profile from './Manage_Profile'
-import ShowPromote from './ShowPromote'
+import Manage_Profile from './Manage_Profile';
+
 
 const options = {
   title: 'Select Profile Image',
   chooseFromLibraryButtonTitle: "Choose Photo from Library",
-  // takePhotoButtonTitle: null,
-  // customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
   storageOptions: {
     skipBackup: true,
     path: 'images',
@@ -34,6 +27,8 @@ const options = {
 };
 class Profile extends Component {
   all_data = this.props.userDetail
+  url = ''
+  loading = false
   constructor(props) {
     super(props);
     this.state = {
@@ -62,35 +57,13 @@ class Profile extends Component {
         backgroundColor: "#0071CE"
       },
       headerTintColor: "#fff",
-      // headerLeft: (
-      //   <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
-      //     {/* <Image
-      //       source={require("../../../assets/Setting.png")}
-      //       resizeMode="contain"
-      //       style={{ width: width / 12, marginLeft: 8, marginRight: -6 }}
-      //     /> */}
-      //     <Icon name="menu" style={{ color: "#fff", marginLeft: 18, fontSize: width / 9 }} />
-      //   </TouchableOpacity>
-      // ),
       headerTitleStyle: {
-        // textAlign: "center",
         flex: 1,
         marginLeft: 12
       },
       headerRight: (
         <View style={{ flexDirection: "row" }}>
-          {/* <TouchableOpacity
-            onPress={() => navigation.toggleDrawer()}
-            style={{ marginRight: width / 28 }}
-          >
-            <Image
-              source={require("../../../assets/groupChat.png")}
-              resizeMode="contain"
-              style={{ width: width / 12, marginLeft: 8, marginRight: -6 }}
-            />
-          </TouchableOpacity> */}
           <TouchableOpacity
-            // onPress={navigation.getParam("selectImage")}
             style={{ marginRight: width / 33 }}
           >
             <Image
@@ -98,10 +71,6 @@ class Profile extends Component {
               resizeMode="contain"
               style={{ width: width / 12, marginLeft: 8, marginRight: -6 }}
             />
-            {/* <Thumbnail
-               onPress={navigation.getParam("selectImage")}
-              style={{ marginLeft: 8, marginRight: -6 }}
-              source={{ uri: navigation.getParam('url') }} /> */}
           </TouchableOpacity>
         </View>
       )
@@ -111,7 +80,6 @@ class Profile extends Component {
 
   Manage_Profile(visible) {
     this.setState({ modalVisibleManage: visible });
-
   }
   PromoteYourSeld(visible) {
     this.setState({ modalVisiblePromoteYourSeld: visible });
@@ -125,7 +93,6 @@ class Profile extends Component {
 
   setModalVisible3(visible, value, Experience) {
     this.setState({ modalVisibleEdit: visible, exp: value, Experience: Experience });
-    // Alert.alert(value, "Edit experience ")
   }
 
   setModalVisibleTagLine(visible) {
@@ -135,115 +102,81 @@ class Profile extends Component {
   selectImage = () => {
     ImagePicker.showImagePicker(options, (response) => {
       if (response !== null) {
-
-
-        console.log('Response = ', response.uri);
         const uri = response.uri
         const user_id = this.props.userID.uid;
 
         if (response.didCancel) {
-          console.log('User cancelled image picker');
         } else if (response.error) {
-          console.log('ImagePicker Error: ', response.error);
         } else if (response.customButton) {
-          console.log('User tapped custom button: ', response.customButton);
         } else {
-
-          // You can also display the image using data:
-          // const source = { uri: 'data:image/jpeg;base64,' + response.data };
           let mime = 'image/jpg';
           const urf = firebase.storage().ref(`Profile_Image/${user_id}`).child(response.fileName).put(uri, { contentType: 'image/jpeg' })
           urf.on('state_changed',
             (snapshot) => {
-              // console.log(snapshot)
-              this.setState({ uploading: true })
-              // progrss function....
-              // const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-              // this.setState({ progress })
-
+              this.loading = true
+              this.setState({ uploading: true });
             },
             (error) => {
               console.log(error);
-              this.setState({ uploading: false })
-              // error function ....
+              this.setState({ uploading: false });
             },
             () => {
-              // complete function...
               const user_id = this.props.userID.uid;
               firebase.storage().ref(`Profile_Image/${user_id}`).child(response.fileName).getDownloadURL().then(url => {
                 this.setState({
                   url,
                   uploading: true
-
-                })
+                });
+                this.url = url
+                this.loading = true
               }).then(() => {
                 const id = firebase.auth().currentUser.uid
                 this.setState({
                   uploading: false
-                })
-                // ("Successfully Upload Profile Image")
-
-                Alert.alert(
-                  '', "Successfully Upload Profile Image",
-                  [
-                    { text: 'OK', onPress: () => this.updateState() },
-                  ],
-                  { cancelable: false },
-                );
+                });
                 firebase.database().ref("users").child(`${id}/userDetail`).update({
-                  url: this.state.url,
+                  url: this.url,
 
                 }).then(() => {
+                  this.loading = true
                   firebase.database().ref("users").child(`${id}/FriendList`).on('value', snapshot => {
                     let userList = snapshot.val();
                     if (userList !== null) {
                       let userListKeys = Object.keys(userList);
                       let userID = this.props.userID.uid;
-
                       userListKeys.map(key => {
                         firebase.database().ref('users').child(key).child(`FriendList/${userID}`).update({
-                          url: this.state.url,
-
+                          url: this.url
                         })
                       })
+                      this.props.profileData(userID);
                     } else {
 
                     }
-
                   })
                 }).then(() => {
-                  let userID = this.props.userID.uid;
-                  this.props.profileData(userID);
-                  this.setState({
-                    uploading: false
-                  })
-
-
-                })
-
-              })
-            })
+                  // let userID = this.props.userID.uid;
+                  // this.props.profileData(userID);
+                  this.loading = false
+                  // this.setState({
+                  //   uploading: false
+                  // });
+                });
+              });
+            });
         }
 
       } else {
 
       }
-
     });
   }
 
 
   async  componentDidMount() {
 
-    // this.props.navigation.setParams({
-    //   url: this.props.userDetail.url
-
-    // });
-
     this.checkPermission();
     this.createNotificationListeners();
-
-
   }
 
   componentWillUnmount() {
@@ -272,18 +205,11 @@ class Profile extends Component {
           title, body,
           [
             { text: 'ok', onPress: () => console.log('OK Pressed') },
-            // {
-            //   text: 'show profile',
-            //   onPress: () => console.log('Cancel Pressed'),
-            //   style: 'cancel',
-            // },
+
           ],
           { cancelable: false },
         );
       } else {
-
-        // this.props.navigation.navigate("MessageList")
-
         Alert.alert(
           title, body,
           [
@@ -297,47 +223,24 @@ class Profile extends Component {
           { cancelable: false },
         );
       }
-
-      // this.showAlert(title, body);
-      // this.props.navigation.navigate("MessageList")
     });
     this.notificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
       const { title, body } = notificationOpen.notification;
       this.showAlert(title, body);
 
       console.log(notificationOpen, "notificationOpen");  //undefine and when click notification tray open app but undefined
-
-
-
     });
     const notificationOpen = await firebase.notifications().getInitialNotification();
     if (notificationOpen) {
       const { title, body } = notificationOpen.notification;
       console.log(notificationOpen, "getInitialNotification"); //when app is background
-      // this.props.navigation.navigate("MessageList")
-      // this.showAlert(title, body);
-      // firebase.notifications().getBadge()
-      // .then(count => {
-      //   count--
-      //   firebase.notifications().setBadge(count)
-      //   console.log('decrease badge', count)
-      // })
-      // .then(() => {
-      //   console.log('decrease badge')
-      // })
-      // .catch(error => {
-      //   console.log('fail to count')
-      // })
+
     }
     this.messageListener = firebase.messaging().onMessage((message) => {
-      //process data message
       console.log(JSON.stringify(message));
     });
   }
   showAlert(title, body) {
-
-
-
   }
   async getToken() {
     let fcmToken = await AsyncStorage.getItem('fcmToken');
@@ -359,8 +262,6 @@ class Profile extends Component {
             user_id: user_id
           })
         }
-
-
       }
     }
   }
@@ -375,7 +276,6 @@ class Profile extends Component {
       console.log('permission rejected');
     }
   }
-
 
   async componentWillMount() {
     let userID = this.props.userID.uid;
@@ -497,7 +397,6 @@ class Profile extends Component {
     return (
       <ScrollView
         contentContainerStyle={{
-          // height: height,
           width
         }}
         style={{ backgroundColor: "#fff" }}>
@@ -509,12 +408,13 @@ class Profile extends Component {
                 <ListItem noBorder thumbnail>
                   <Left>
                     <TouchableOpacity onPress={this.selectImage}>
-
-                      <Thumbnail
-                        style={{ borderRadius: 30 / 4 }} large
-                        square
-                        source={{ uri: userDetail.url }} />
-
+                      {this.loading === false ?
+                        <Thumbnail
+                          style={{ borderRadius: 30 / 4 }} large
+                          square
+                          source={{ uri: this.url === '' ? userDetail.url : this.url }} />
+                        : <Spinner color='blue' />
+                      }
                     </TouchableOpacity>
 
                   </Left>
@@ -522,6 +422,7 @@ class Profile extends Component {
                     <Text style={{ fontSize: width / 20, color: "#fff", fontWeight: "bold" }}>
                       Say hi to add your tagline
                     </Text>
+
                   </Body>
                 </ListItem>
                 <Text style={{ fontSize: width / 50, color: "#fff", fontStyle: "italic", paddingLeft: 15 }}>

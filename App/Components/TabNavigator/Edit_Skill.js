@@ -118,7 +118,7 @@ class Edit_Skill extends Component {
     }
 
     render() {
-        console.log("waaaa", this.state.keyss)
+        // console.log("waaaa", this.state.keyss)
 
         return (
             <View

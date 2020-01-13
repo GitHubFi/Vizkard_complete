@@ -68,7 +68,7 @@ export default class SplashScreen extends Component {
           //this.reset('signIn')
           this.loadApp();
 
-        }, 800)
+        }, 1000)
       } else {
         this.setState({
           connectionInfo: info
@@ -117,7 +117,7 @@ export default class SplashScreen extends Component {
               <MaterialCommunityIcons name='reload' spin color="blue" size={width / 15} style={{ marginTop: 60, }} onPress={() => this.check_internet()} />
               <Text style={{}}>No internet connection Try again</Text>
             </View>
-             : null
+            : null
         }
       </View>
     );

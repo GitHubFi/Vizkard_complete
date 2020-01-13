@@ -20,12 +20,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  // whitelist: [
-  //   'authReducer',
-  // ],
-  // blacklist: [
-  //   'appReducer'
-  // ]
+
 }
 export const rootEpic = combineEpics(
   AuthEpic.loginEpic,

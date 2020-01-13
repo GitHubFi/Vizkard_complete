@@ -37,6 +37,8 @@ exports.sendFriendRequest = functions.database.ref('/friend_requst_function/{use
                     data_type: "direct_message",
                     title: "Friend Request",
                     body: `${senderName} sent a friend request`,
+                    badge: '1'
+
 
                 },
 
@@ -90,35 +92,41 @@ exports.sendNotification = functions.database.ref('/messages1/{userId}/{messageI
             const token = snap.child("messaging_token").val();
             console.log("token: ", token);
 
-            //we have everything we need
-            //Build the message payload and send the message
-            console.log("Construction the notification message.");
+            return admin.database().ref("/users/" + receiverId + "/userDetail").once('value').then(snap => {
+                const userDetail = snap.val();
+                // console.log(userDetail,'userDetail')
 
-            const payload = {
-                notification: {
-                    data_type: "direct_message",
-                    title: "New Message from " + senderName,
-                    body: message,
-                    // click_action: "fcm.ACTION.HELLO",
 
-                },
+                //we have everything we need
+                //Build the message payload and send the message
+                console.log("Construction the notification message.");
 
-            };
-            let options = { priority: "high" };
+                const payload = {
+                    notification: {
+                        data_type: "direct_message",
+                        title: "New Message from " + senderName,
+                        body: message,
+                        badge: "1",
+                        userDetail: `${userDetail}`,
+                    },
+                  
 
-            // eslint-disable-next-line promise/no-nesting
-            return admin.messaging().sendToDevice(token, payload, options)
-                // eslint-disable-next-line promise/always-return
-                // eslint-disable-next-line prefer-arrow-callback
-                .then(function (response) {
-                    console.log("Successfully sent message:", response);
-                    console.log(response.results[0].error);
-                })
-                // eslint-disable-next-line prefer-arrow-callback
-                .catch(function (error) {
-                    console.log("Error sending message:", error);
-                });
+                };
+                let options = { priority: "high" };
 
+                // eslint-disable-next-line promise/no-nesting
+                return admin.messaging().sendToDevice(token, payload, options)
+                    // eslint-disable-next-line promise/always-return
+                    // eslint-disable-next-line prefer-arrow-callback
+                    .then(function (response) {
+                        console.log("Successfully sent message:", response);
+                        console.log(response.results[0].error);
+                    })
+                    // eslint-disable-next-line prefer-arrow-callback
+                    .catch(function (error) {
+                        console.log("Error sending message:", error);
+                    });
+            });
         });
     });
 });
@@ -218,6 +226,7 @@ exports.sendGroupNotification = functions.database.ref('/group_notification/{use
                         data_type: "direct_message",
                         title: "New Message from " + group_name,
                         body: message,
+                        badge: '1'
                         // click_action: "fcm.ACTION.HELLO",
                     },
                 };

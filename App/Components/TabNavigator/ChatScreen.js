@@ -154,7 +154,7 @@ class ChatScreen extends Component {
 }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps.All_Message, "nextProps")
+    // console.log(nextProps.All_Message, "nextProps")
     if (this.props.All_Message !== nextProps.All_Message) {
       this.setState({
         messageList: nextProps.All_Message,
@@ -300,7 +300,7 @@ class ChatScreen extends Component {
   FriendMessageDelete = (item) => {
     const my_id = this.props.userID.uid;
     const friend_id = item.from;
-    console.log(my_id, friend_id);
+    // console.log(my_id, friend_id);
     var ref = firebase.database().ref("messages").child(`${my_id}`).child(`${friend_id}`);
     ref.orderByChild("message").equalTo(item.message).once("value", function (snapshot) {
       snapshot.forEach(function (employee) {
@@ -313,7 +313,7 @@ class ChatScreen extends Component {
   deleteMyMesssage = (item) => {
     const my_id = this.props.userID.uid;
     const friend_id = this.state.person.phone;
-    console.log(my_id, friend_id, item.message);
+    // console.log(my_id, friend_id, item.message);
     var ref = firebase.database().ref("messages").child(`${my_id}`).child(`${friend_id}`);
     ref.orderByChild("message").equalTo(item.message).once("value", function (snapshot) {
       snapshot.forEach(function (employee) {
@@ -325,7 +325,7 @@ class ChatScreen extends Component {
   delete_for_everyone = (item) => {
     const my_id = this.props.userID.uid;
     const friend_id = this.state.person.phone;
-    console.log(my_id, friend_id);
+    // console.log(my_id, friend_id);
     var ref = firebase.database().ref("messages").child(`${my_id}`).child(`${friend_id}`);
     ref.orderByChild("message").equalTo(item.message).once("value", function (snapshot) {
       snapshot.forEach(function (employee) {
@@ -354,7 +354,7 @@ class ChatScreen extends Component {
           },
           {
             text: 'CANCEL',
-            onPress: () => console.log('Cancel Pressed'),
+            // onPress: () => console.log('Cancel Pressed'),
             style: 'cancel',
           },
           { text: 'DELETE FOR ME', onPress: () => this.deleteMyMesssage(item) },

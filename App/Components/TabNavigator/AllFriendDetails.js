@@ -221,7 +221,7 @@ class AllFriendDetails extends Component {
                 this.setState({
                     hide_skill: value.val()
                 })
-                console.log(value, "value")
+                // console.log(value, "value")
             });
 
 
@@ -233,7 +233,7 @@ class AllFriendDetails extends Component {
                 this.setState({
                     hide_city: value.val()
                 })
-                console.log(value, "value")
+                // console.log(value, "value")
             });
         firebase
             .database()
@@ -243,7 +243,7 @@ class AllFriendDetails extends Component {
                 this.setState({
                     hide_phone: value.val()
                 })
-                console.log(value, "value")
+                // console.log(value, "value")
             });
         firebase
             .database()
@@ -253,7 +253,7 @@ class AllFriendDetails extends Component {
                 this.setState({
                     hide_profession: value.val()
                 })
-                console.log(value, "value")
+                // console.log(value, "value")
             });
         firebase
             .database()
@@ -263,7 +263,7 @@ class AllFriendDetails extends Component {
                 this.setState({
                     hide_experience: value.val()
                 })
-                console.log(value, "value")
+                // console.log(value, "value")
             });
 
 
@@ -298,7 +298,7 @@ class AllFriendDetails extends Component {
 
     render() {
         let userDetail = this.props.navigation.getParam('detailUser');
-        console.log(this.state.hide_skill, "hide_skill");
+        // console.log(this.state.hide_skill, "hide_skill");
         return (
 
             <ScrollView

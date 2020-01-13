@@ -205,7 +205,7 @@ class PublicProfileDetail extends Component {
                 this.setState({
                     hide_skill: value.val()
                 })
-                console.log(value, "value")
+                // console.log(value, "value")
             });
         firebase
             .database()
@@ -215,7 +215,7 @@ class PublicProfileDetail extends Component {
                 this.setState({
                     hide_experience: value.val()
                 })
-                console.log(value, "value")
+                // console.log(value, "value")
             });
 
         firebase
@@ -226,7 +226,7 @@ class PublicProfileDetail extends Component {
                 this.setState({
                     hide_city: value.val()
                 })
-                console.log(value, "value")
+                // console.log(value, "value")
             });
         firebase
             .database()
@@ -236,7 +236,7 @@ class PublicProfileDetail extends Component {
                 this.setState({
                     hide_phone: value.val()
                 })
-                console.log(value, "value")
+                // console.log(value, "value")
             });
         firebase
             .database()
@@ -246,7 +246,7 @@ class PublicProfileDetail extends Component {
                 this.setState({
                     hide_profession: value.val()
                 })
-                console.log(value, "value")
+                // console.log(value, "value")
             });
     }
     update_State = () => {

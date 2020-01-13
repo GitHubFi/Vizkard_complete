@@ -13,14 +13,10 @@ import MessageList from "./TabNavigator/MessageList";
 import GlobalSocial from "./TabNavigator/GlobalSocial";
 import Videos from "./TabNavigator/Videos";
 import SearchFriend from "./TabNavigator/SearchFriend";
-import CreateProfile from "./DrawerNavigator/CreateProfile";
-import Backup from "./DrawerNavigator/Backup";
 import Feedback from "./DrawerNavigator/Feedback";
 import Help from "./DrawerNavigator/Help";
 import ManageAccount from "./DrawerNavigator/ManageAccount";
 import Notification from "./DrawerNavigator/Notification";
-import Upgrade from "./DrawerNavigator/Upgrade";
-import LogOut from './DrawerNavigator/LogOut'
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import ChatScreen from "./TabNavigator/ChatScreen";
 import PublicProfileDetail from './TabNavigator/publicProfileDetail'
@@ -29,13 +25,9 @@ import CreateGroup from './TabNavigator/groups/CreateGroups'
 import ChattingGroup from './TabNavigator/groups/ChattingGroup'
 import MakeGroup from './TabNavigator/groups/MakeGroup'
 
-
-
 const { width, height } = Dimensions.get("window");
 import { store } from '../Store'
 import firebase from 'react-native-firebase';
-
-// import LogOut from './DrawerNavigator/LogOut';
 import {
   Image,
   Dimensions,
@@ -63,17 +55,6 @@ const CustomDrawerComponent = props => (
         Hi, we are here to {"\n"}
         assist you.
       </Text>
-      {/* <View style={{
-        height: 150,
-        // backgroundColor: "#0071ce",
-        alignItems: "center",
-        paddingTop: 40,
-        padding:15,
-        justifyContent: "center"
-      }}>
-
-        <Thumbnail source={{ uri: "https://firebasestorage.googleapis.com/v0/b/vizkard-bb042.appspot.com/o/post%2F8VHaHbTTybGEVFbbGFKKpVMsAPW.jpg?alt=media&token=4de14fd2-08a2-420e-a126-6a4aa855d7e4" }} />
-      </View> */}
     </View>
     <ScrollView>
       <DrawerItems {...props} />
@@ -154,17 +135,8 @@ const CustomDrawerComponent = props => (
                         }))
                         await AsyncStorage.removeItem('persist:root', (err => {
                           console.log(err, "remove state persist")
-
                         }))
-
-
-
-                        // store.dispatch({
-
-                        // })
                         props.navigation.navigate('Login');
-
-
                       }).catch((err) => {
                         console.log(err)
                       })
@@ -173,29 +145,11 @@ const CustomDrawerComponent = props => (
                 ],
                 { cancelable: false }
               )
-            }>
-
-            <Text style={{ fontFamily: 'Arial', fontSize: 15, color: "#000", fontWeight: "bold", }}
-            >
-              LogOut
-    </Text>
+            }><Text style={{ fontFamily: 'Arial', fontSize: 15, color: "#000", fontWeight: "bold", }}
+            > LogOut </Text>
           </MaterialCommunityIcons.Button>
-          {/* <Text
-            style={{
-              paddingLeft: 0,
-              
-              paddingBottom: height /-5,
-              marginLeft: 50,
-              fontWeight: "bold",
-              color:'#000',
-              fontSize:15,
-              backgroundColor:'red'
-            }}>
-           
-          </Text> */}
+
         </View>
-
-
       </TouchableOpacity>
     </ScrollView>
   </SafeAreaView>
@@ -213,15 +167,12 @@ const MessageStack = createStackNavigator({
   ChattingGroup: {
     screen: ChattingGroup
   },
-  MakeGroup:{
-    screen:MakeGroup
+  MakeGroup: {
+    screen: MakeGroup
   }
- 
-  
+
 
 });
-
-
 
 const ProfileStack = createStackNavigator({
   Profile: {
@@ -242,11 +193,7 @@ const ProfileStack = createStackNavigator({
         headerTintColor: "#fff",
         headerLeft: (
           <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
-            {/* <Image
-              source={require("../../assets/Setting.png")}
-              resizeMode="contain"
-              style={{ width: width / 12, marginLeft: 8, marginRight: -6 }}
-            /> */}
+
             <Icon name="menu" style={{ color: "#fff", marginLeft: 18, fontSize: width / 9 }} />
           </TouchableOpacity>
         ),
@@ -283,11 +230,6 @@ const SearchFriendStack = createStackNavigator({
     screen: AllFriendDetails
   }
 });
-
-
-
-
-
 const AppTabNavigator = createBottomTabNavigator(
   {
     Profile: {
@@ -384,57 +326,26 @@ AppTabNavigator.navigationOptions = {
 const AppStackNavigator = createStackNavigator({
   AppTabNavigator
 });
-
-// const createProfileStack = createStackNavigator({
-//   CreateProfile: {
-//     screen: CreateProfile
-//   }
-// });
-
-
-
-
-
 export default (AppDrawerNavigator = createDrawerNavigator(
   {
 
     "           Go Home": AppStackNavigator,
-    // "          ": createProfileStack,
 
     Notifications: {
       screen: Notification,
     },
-    // Notification: Notification,
     Feedback: Feedback,
     ManageProfile: ManageAccount,
     Help: Help,
-    // Backup: Backup,
-    // FAQ: Upgrade,
-    // Logout: LogOut
   },
   {
-    // initialRouteName: CreateProfile,
     contentComponent: CustomDrawerComponent,
     contentOptions: {
       activeTintColor: "#0071ce",
       labelStyle: {
         alignSelf: "flex-start",
         textAlign: "left",
-        // flex: 1,
-        // marginRight:-20
-        // fontSize:width/9
-        // marginLeft: -10
       }
     }
-
-    //     navigationOptions : ((navigation)=>{
-    //         return{
-    //             drawerIcon:({  tintColor} )=>(
-    // <Button title="Log Out" onPress={ async  ()=> await AsyncStorage.clear()} >
-    // <Image source={require('../../assets/logout.png')} resizeMode='contain'/>
-    // </Button>
-    //             )
-    //         }
-    //     })
   }
 ));

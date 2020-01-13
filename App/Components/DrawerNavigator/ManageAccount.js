@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, ScrollView, Dimensions, Image, TouchableOpacity, ToastAndroid, AsyncStorage, } from 'react-native';
-import { Input, Button, Spinner, Thumbnail, Header, Left, Body, Right, Title, Icon, ListItem, Switch, List, } from "native-base";
+import { Text, View, Dimensions, Image, TouchableOpacity } from 'react-native';
+import { Button, Header, Left, Body, Right, Title, Icon, ListItem, Switch } from "native-base";
 const { height, width } = Dimensions.get('window');
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import firebase from "react-native-firebase";
-import Entypo from "react-native-vector-icons/Entypo";
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+
 
 
 export default class ManageAccount extends Component {
@@ -23,7 +22,6 @@ export default class ManageAccount extends Component {
             hide_city: false,
             hide_pro_value: null,
             hide_profession: false
-
         }
     }
     static navigationOptions = {
@@ -44,7 +42,7 @@ export default class ManageAccount extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const user = firebase.auth().currentUser.uid
         firebase
             .database()
@@ -54,7 +52,6 @@ export default class ManageAccount extends Component {
                 this.setState({
                     skill_hide_value: value.val()
                 })
-
             });
 
         firebase
@@ -64,10 +61,7 @@ export default class ManageAccount extends Component {
             .on("child_added", value => {
                 this.setState({
                     experience_hide_value: value.val(),
-
-
-                })
-
+                });
             });
         firebase
             .database()
@@ -76,10 +70,7 @@ export default class ManageAccount extends Component {
             .on("child_added", value => {
                 this.setState({
                     hide_phone_value: value.val(),
-
-
-                })
-
+                });
             });
 
         firebase
@@ -89,10 +80,7 @@ export default class ManageAccount extends Component {
             .on("child_added", value => {
                 this.setState({
                     hide_city_value: value.val(),
-
-
                 })
-
             });
         firebase
             .database()
@@ -101,22 +89,14 @@ export default class ManageAccount extends Component {
             .on("child_added", value => {
                 this.setState({
                     hide_pro_value: value.val(),
-
-
                 })
-
             });
     }
 
-
-
     onSkill_hide = () => {
-
-
         if (this.state.skill_hide_value === null) {
             let user_id = firebase.auth().currentUser.uid
             firebase.database().ref("user_privacy").child(user_id).set({
-
                 hide_skill: true
             });
             this.setState({
@@ -126,7 +106,6 @@ export default class ManageAccount extends Component {
         } else if (this.state.skill_hide_value === true) {
             let user_id = firebase.auth().currentUser.uid
             firebase.database().ref("user_privacy").child(user_id).set({
-
                 hide_skill: false
             });
             this.setState({
@@ -135,7 +114,6 @@ export default class ManageAccount extends Component {
         } else if (this.state.skill_hide_value === false) {
             let user_id = firebase.auth().currentUser.uid
             firebase.database().ref("user_privacy").child(user_id).set({
-
                 hide_skill: true
             });
             this.setState({
@@ -145,16 +123,13 @@ export default class ManageAccount extends Component {
     }
 
     onExperience_hide = () => {
-
         if (this.state.experience_hide_value === null) {
             let user_id = firebase.auth().currentUser.uid
             firebase.database().ref("user_experience_hide").child(user_id).set({
-
                 hide_experience: true
             });
             this.setState({
                 experience_hide_value: true,
-
             })
         } else if (this.state.experience_hide_value === true) {
 
@@ -175,22 +150,18 @@ export default class ManageAccount extends Component {
             });
             this.setState({
                 experience_hide_value: true,
-
             })
         }
-
     }
 
     onPhone_hide = () => {
         if (this.state.hide_phone_value === null) {
             let user_id = firebase.auth().currentUser.uid
             firebase.database().ref("privacy/hide_phone").child(user_id).set({
-
                 hide_phone: true
             });
             this.setState({
                 hide_phone_value: true,
-
             })
         } else if (this.state.hide_phone_value === true) {
 
